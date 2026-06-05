@@ -71,7 +71,7 @@ if not st.session_state["autenticado"]:
 # CÓDIGO DO APLICATIVO PREMIUM (SÓ ABRE SE A SENHA ESTIVER CORRETA)
 # =========================================================================
 
-st.title("⚡ Frantz Partners")
+st.title("⚡ Franz Partners")
 st.caption("SISTEMA CORPORATIVO DE FISCALIZAÇÃO ROBÓTICA DE ADQUIRÊNCIA")
 st.write("---")
 
