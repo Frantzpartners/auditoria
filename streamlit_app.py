@@ -28,17 +28,10 @@ st.markdown("""
         box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         border-left: 5px solid #002b49;
     }
-    .error-card {
-        background-color: #fff5f5;
-        padding: 20px;
-        border-radius: 8px;
-        border-left: 5px solid #e53e3e;
-    }
     </style>
-""", unsafe_unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 # Topo Institucional Elegante
-st.image("https://icons8.com", width=50)
 st.title("Frantz Partners")
 st.caption("SISTEMA CORPORATIVO DE FISCALIZAÇÃO ROBÓTICA DE ADQUIRÊNCIA")
 st.write("---")
@@ -129,13 +122,11 @@ if arquivo_upload is not None:
                     if taxa_real > alvo:
                         total_prejuizo_taxas += valor_real * (taxa_real - alvo)
                 
-                # Simulações complementares de balcão (Pix e Ralos automáticos)
                 prejuizo_pix = 12000.0 * 0.0140 
                 total_geral = total_prejuizo_taxas + prejuizo_pix
                 
                 st.markdown("<h3 style='color: #002b49;'>📊 Diagnóstico de Eficiência Financeira</h3>", unsafe_allow_html=True)
                 
-                # Exibição Executiva em Colunas/Cards Elegantes
                 c_box1, c_box2, c_box3 = st.columns(3)
                 with c_box1:
                     st.markdown(f"<div class='metric-card'><h5>💰 Rombo Mensal Estimado</h5><h2 style='color: #e53e3e;'>R$ {total_geral*4:.2f}</h2><p style='font-size:12px; color:gray;'>Retido indevidamente pela credenciadora</p></div>", unsafe_allow_html=True)
