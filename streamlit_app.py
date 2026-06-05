@@ -11,13 +11,11 @@ st.set_page_config(
 # =========================================================================
 # 🔒 SISTEMA DE SEGURANÇA E CHAVE DE ACESSO CORPORATIVA
 # =========================================================================
-SENHA_CORRETA = "100%economia"  # << SUA SENHA DEFINITIVA INTEGRADA
+SENHA_CORRETA = "100%economia"
 
-# Inicia a sessão de segurança se não existir
 if "autenticado" not in st.session_state:
     st.session_state["autenticado"] = False
 
-# Se NÃO estiver autenticado, mostra APENAS a tela de bloqueio com fundo escuro
 if not st.session_state["autenticado"]:
     st.markdown("""
         <style>
@@ -32,7 +30,7 @@ if not st.session_state["autenticado"]:
     st.write("<br><br>", unsafe_allow_html=True)
     st.title("⚡ Frantz Partners")
     st.subheader("🔒 Área Restrita - Sistema de Fiscalização Robótica")
-    st.write("Este aplicativo possui criptografia de dados e acesso restrito a consultores homologados.")
+    st.write("Este aplicativo possui acesso restrito a consultores homologados.")
     
     senha_digitada = st.text_input("Digite a Chave de Acesso Corporativa:", type="password")
     
@@ -42,67 +40,30 @@ if not st.session_state["autenticado"]:
             st.rerun()
         else:
             st.error("❌ Chave de acesso incorreta! Permissão negada.")
-            
-    st.stop() # Trava o código aqui e impede de carregar o resto do app
+    st.stop()
 
 # =========================================================================
 # CÓDIGO DO APLICATIVO PREMIUM (SÓ ABRE SE A SENHA ESTIVER CORRETA)
 # =========================================================================
 
-# Estilização CSS para forçar o Dark Mode Premium e Moderno
 st.markdown("""
     <style>
-    .stApp, header, [data-testid="stSidebar"] {
-        background-color: #121214 !important;
-        color: #ffffff !important;
-    }
-    [data-testid="stSidebar"] p, [data-testid="stSidebar"] span, [data-testid="stSidebar"] label {
-        color: #e2e8f0 !important;
-    }
-    input {
-        background-color: #202024 !important;
-        color: #ffffff !important;
-        border: 1px solid #323238 !important;
-    }
-    .stButton>button {
-        background-color: #10b981;
-        color: white !important;
-        border-radius: 6px;
-        padding: 12px 24px;
-        font-weight: bold;
-        width: 100%;
-        border: none;
-    }
+    .stApp, header, [data-testid="stSidebar"] { background-color: #121214 !important; color: #ffffff !important; }
+    [data-testid="stSidebar"] p, [data-testid="stSidebar"] span, [data-testid="stSidebar"] label { color: #e2e8f0 !important; }
+    input { background-color: #202024 !important; color: #ffffff !important; border: 1px solid #323238 !important; }
+    .stButton>button { background-color: #10b981; color: white !important; border-radius: 6px; padding: 12px 24px; font-weight: bold; width: 100%; border: none; }
     .stButton>button:hover { background-color: #059669; color: white !important; }
-    .metric-card {
-        background-color: #202024;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        border-left: 5px solid #3b82f6;
-        color: #ffffff;
-    }
-    h1, h2, h3, h4, h5, h6, p, label, span {
-        color: #ffffff !important;
-    }
-    .stAlert {
-        background-color: #202024 !important;
-        color: #ffffff !important;
-        border: 1px solid #323238 !important;
-    }
+    .metric-card { background-color: #202024; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); border-left: 5px solid #3b82f6; color: #ffffff; }
+    h1, h2, h3, h4, h5, h6, p, label, span { color: #ffffff !important; }
+    .stAlert { background-color: #202024 !important; color: #ffffff !important; border: 1px solid #323238 !important; }
     </style>
 """, unsafe_allow_html=True)
 
-# Topo Institucional Elegante em Modo Escuro
 st.title("⚡ Frantz Partners")
 st.caption("SISTEMA CORPORATIVO DE FISCALIZAÇÃO ROBÓTICA DE ADQUIRÊNCIA")
 st.write("---")
 
-# 1. BARRA LATERAL: Definição de Metas (A Engenharia Dagoberto Franz)
 st.sidebar.markdown("<h2 style='color: #10b981 !important;'>🎯 Metas Otimizadas</h2>", unsafe_allow_html=True)
-st.sidebar.write("Configure abaixo as taxas alvo que você conquistará direto na matriz da operadora:")
-
-st.sidebar.subheader("🔵 Arranjos de Débito")
 alvo_deb_visa = st.sidebar.number_input("Visa Débito (%)", value=1.25) / 100
 alvo_deb_master = st.sidebar.number_input("Master Débito (%)", value=1.25) / 100
 alvo_deb_elo = st.sidebar.number_input("Elo Débito (%)", value=1.50) / 100
@@ -126,7 +87,6 @@ if st.sidebar.button("🔒 Desconectar Sistema"):
     st.session_state["autenticado"] = False
     st.rerun()
 
-# 2. TELA PRINCIPAL: SELETOR DAS 6 GIGANTES
 st.markdown("<h3 style='color: #ffffff;'>📂 Passo 1: Selecionar a Operadora Vigente</h3>", unsafe_allow_html=True)
 adquirente_selecionada = st.selectbox(
     "Escolha a maquininha ativa no balcão do cliente:", 
@@ -143,7 +103,7 @@ if arquivo_upload is not None:
         else:
             df_cliente = pd.read_csv(arquivo_upload, sep=None, engine='python')
             
-        st.success(f"📊 Extrato da {adquirente_selecionada} importado e integrado com sucesso!")
+        st.success(f"📊 Extrato da {adquirente_selecionada} importado com sucesso!")
         
         col_produto, col_taxa, col_valor = "", "", ""
         if "Stone" in adquirente_selecionada:
@@ -193,3 +153,14 @@ if arquivo_upload is not None:
                         else: alvo = alvo_parc_2_6
                     elif any(x in produto_real for x in ["ALELO", "SODEXO", "VOUCH"]): alvo = alvo_voucher
                     
+                    if taxa_real > alvo:
+                        total_prejuizo_taxas += valor_real * (taxa_real - alvo)
+                
+                prejuizo_pix = 12000.0 * 0.0140 
+                total_geral = total_prejuizo_taxas + prejuizo_pix
+                
+                st.markdown("<h3>📊 Diagnóstico de Eficiência Financeira</h3>", unsafe_allow_html=True)
+                c_box1, c_box2, c_box3 = st.columns(3)
+                with c_box1:
+                    st.markdown(f"<div class='metric-card' style='border-left: 5px solid #ef4444;'><h5>💰 Rombo Mensal Estimado</h5><h2 style='color: #ef4444 !important;'>R$ {total_geral*4:.2f}</h2><p style='font-size:12px; color:#9ca3af;'>Retido pela credenciadora</p></div>", unsafe_allow_html=True)
+                with c_box2:
