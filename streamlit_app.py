@@ -170,8 +170,7 @@ if arquivo_upload is not None:
                 st.write("<br>", unsafe_allow_html=True)
                 st.success(f"🎯 Operação concluída: Margem líquida expandida em R$ {total_geral - (total_geral/2):.2f} nesta semana (Auditoria Completa até 18x).")
         else:
-            st.warning("⚠️ Nota: O formato deste arquivo variou ligeiramente das colunas padrão.")
-            st.info("Utilize a simulação de balcão preenchendo os dados nas abas abaixo para rodar o show visual.")
+            st.warning("⚠️ Nota: O formato das colunas do arquivo importado variou do padrão configurado.")
             
     except Exception as e:
         st.error(f"❌ Erro de processamento do layout: {e}.")
