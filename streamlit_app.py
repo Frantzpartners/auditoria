@@ -11,22 +11,18 @@ st.set_page_config(
 # Estilização CSS para forçar o Dark Mode Premium e Moderno
 st.markdown("""
     <style>
-    /* Força o fundo escuro na página e na barra lateral */
     .stApp, header, [data-testid="stSidebar"] {
         background-color: #121214 !important;
         color: #ffffff !important;
     }
-    /* Estilização dos textos da barra lateral */
     [data-testid="stSidebar"] p, [data-testid="stSidebar"] span, [data-testid="stSidebar"] label {
         color: #e2e8f0 !important;
     }
-    /* Estilização dos inputs numéricos */
     input {
         background-color: #202024 !important;
         color: #ffffff !important;
         border: 1px solid #323238 !important;
     }
-    /* Botão Principal Executivo */
     .stButton>button {
         background-color: #10b981;
         color: white !important;
@@ -37,7 +33,6 @@ st.markdown("""
         border: none;
     }
     .stButton>button:hover { background-color: #059669; color: white !important; }
-    /* Cards de Métricas em Modo Escuro */
     .metric-card {
         background-color: #202024;
         padding: 20px;
@@ -49,7 +44,6 @@ st.markdown("""
     h1, h2, h3, h4, h5, h6, p, label, span {
         color: #ffffff !important;
     }
-    /* Ajuste de links e caixas de aviso */
     .stAlert {
         background-color: #202024 !important;
         color: #ffffff !important;
@@ -60,7 +54,7 @@ st.markdown("""
 
 # Topo Institucional Elegante em Modo Escuro
 st.title("⚡ Frantz Partners")
-st.caption("SISTEMA CORPORATIVO DE FISCALIZAÇÃO ROBÓTICA DE ADQUIRÊNCIA (DARK MODE V1.0)")
+st.caption("SISTEMA CORPORATIVO DE FISCALIZAÇÃO ROBÓTICA DE ADQUIRÊNCIA")
 st.write("---")
 
 # 1. BARRA LATERAL: Definição de Metas (A Engenharia Dagoberto Franz)
@@ -106,7 +100,6 @@ if arquivo_upload is not None:
             
         st.success(f"📊 Extrato da {adquirente_selecionada} importado e integrado com sucesso!")
         
-        # Mapeamento interno inteligente de colunas
         col_produto, col_taxa, col_valor = "", "", ""
         if "Stone" in adquirente_selecionada:
             col_produto = "Modalidade" if "Modalidade" in df_cliente.columns else "Produto"
@@ -150,13 +143,13 @@ if arquivo_upload is not None:
                     if "DEB" in produto_real: alvo = alvo_deb_visa
                     elif "CRED" in produto_real or "AVISTA" in produto_real: alvo = alvo_cred_visa
                     elif "PARC" in produto_real or "PARCELADO" in produto_real:
-                        if "13" in produto_real or "14" in produto_real or "15" in produto_real or "16" in produto_real or "17" in produto_real or "18" in produto_real:
+                        if any(x in produto_real for x in ["13","14","15","16","17","18"]):
                             alvo = alvo_parc_13_18
-                        elif "7" in produto_real or "8" in produto_real or "9" in produto_real or "10" in produto_real or "11" in produto_real or "12" in produto_real:
+                        elif any(x in produto_real for x in ["7","8","9","10","11","12"]):
                             alvo = alvo_parc_7_12
                         else:
                             alvo = alvo_parc_2_6
-                    elif "ALELO" in produto_real or "SODEXO" in produto_real or "VOUCH" in produto_real: alvo = alvo_voucher
+                    elif any(x in produto_real for x in ["ALELO", "SODEXO", "VOUCH"]): alvo = alvo_voucher
                     
                     if taxa_real > alvo:
                         total_prejuizo_taxas += valor_real * (taxa_real - alvo)
@@ -170,8 +163,16 @@ if arquivo_upload is not None:
                 with c_box1:
                     st.markdown(f"<div class='metric-card' style='border-left: 5px solid #ef4444;'><h5>💰 Rombo Mensal Estimado</h5><h2 style='color: #ef4444 !important;'>R$ {total_geral*4:.2f}</h2><p style='font-size:12px; color:#9ca3af;'>Retido pela credenciadora</p></div>", unsafe_allow_html=True)
                 with c_box2:
-                    st.markdown(f"<div class='metric-card' style='border-left: 5px solid #3b82f6;'><h5>📉 Vazamento Semanal Estancado</h5><h2 style='color: #3b82f6 !important;'>R$ {total_geral:.2f}</h2><p style='font-size:12px; color:#9ca3af;'>Lucro líquido que retorna ao caixa</p></div>", unsafe_allow_html=True)
+                    st.markdown(f"<div class='metric-card' style='border-left: 5px solid #3b82f6;'><h5>📉 Vazamento Semanal Estancado</h5><h2 style='color: #3b82f6 !important;'>R$ {total_geral:.2f}</h2><p style='font-size:12px; color:#9ca3af;'>Retorna ao caixa</p></div>", unsafe_allow_html=True)
                 with c_box3:
                     st.markdown(f"<div class='metric-card' style='border-left: 5px solid #10b981;'><h5>🤝 Honorários Frantz Partners</h5><h2 style='color: #10b981 !important;'>R$ {total_geral / 2:.2f}</h2><p style='font-size:12px; color:#9ca3af;'>Comissão de 50% do êxito</p></div>", unsafe_allow_html=True)
                 
                 st.write("<br>", unsafe_allow_html=True)
+                st.success(f"🎯 Operação concluída: Margem líquida expandida em R$ {total_geral - (total_geral/2):.2f} nesta semana (Auditoria Completa até 18x).")
+        else:
+            st.warning("⚠️ Nota: O formato deste arquivo variou ligeiramente das colunas padrão.")
+            st.info("Utilize a simulação de balcão preenchendo os dados nas abas abaixo para rodar o show visual.")
+            
+    except Exception as e:
+        st.error(f"❌ Erro de processamento do layout: {e}.")
+else:
