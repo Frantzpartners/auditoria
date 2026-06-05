@@ -8,6 +8,47 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# =========================================================================
+# 🔒 SISTEMA DE SEGURANÇA E CHAVE DE ACESSO CORPORATIVA
+# =========================================================================
+SENHA_CORRETA = "100%economia"  # << SUA SENHA DEFINITIVA INTEGRADA
+
+# Inicia a sessão de segurança se não existir
+if "autenticado" not in st.session_state:
+    st.session_state["autenticado"] = False
+
+# Se NÃO estiver autenticado, mostra APENAS a tela de bloqueio com fundo escuro
+if not st.session_state["autenticado"]:
+    st.markdown("""
+        <style>
+        .stApp, header { background-color: #121214 !important; color: #ffffff !important; }
+        input { background-color: #202024 !important; color: #ffffff !important; border: 1px solid #323238 !important; }
+        .stButton>button { background-color: #10b981; color: white !important; border-radius: 6px; padding: 10px 20px; font-weight: bold; border: none; }
+        .stButton>button:hover { background-color: #059669; }
+        h2, p, label { color: #ffffff !important; }
+        </style>
+    """, unsafe_allow_html=True)
+    
+    st.write("<br><br>", unsafe_allow_html=True)
+    st.title("⚡ Frantz Partners")
+    st.subheader("🔒 Área Restrita - Sistema de Fiscalização Robótica")
+    st.write("Este aplicativo possui criptografia de dados e acesso restrito a consultores homologados.")
+    
+    senha_digitada = st.text_input("Digite a Chave de Acesso Corporativa:", type="password")
+    
+    if st.button("Acessar Plataforma"):
+        if senha_digitada == SENHA_CORRETA:
+            st.session_state["autenticado"] = True
+            st.rerun()
+        else:
+            st.error("❌ Chave de acesso incorreta! Permissão negada.")
+            
+    st.stop() # Trava o código aqui e impede de carregar o resto do app
+
+# =========================================================================
+# CÓDIGO DO APLICATIVO PREMIUM (SÓ ABRE SE A SENHA ESTIVER CORRETA)
+# =========================================================================
+
 # Estilização CSS para forçar o Dark Mode Premium e Moderno
 st.markdown("""
     <style>
@@ -81,6 +122,10 @@ alvo_voucher = st.sidebar.number_input("Vouchers (Benefícios) (%)", value=3.50)
 custo_aluguel_alvo = st.sidebar.number_input("Aluguel de Máquinas Alvo (R$)", value=0.0)
 receba_rapido_autorizado = st.sidebar.checkbox("Manter Antecipação Automática?", value=False)
 
+if st.sidebar.button("🔒 Desconectar Sistema"):
+    st.session_state["autenticado"] = False
+    st.rerun()
+
 # 2. TELA PRINCIPAL: SELETOR DAS 6 GIGANTES
 st.markdown("<h3 style='color: #ffffff;'>📂 Passo 1: Selecionar a Operadora Vigente</h3>", unsafe_allow_html=True)
 adquirente_selecionada = st.selectbox(
@@ -91,7 +136,6 @@ adquirente_selecionada = st.selectbox(
 st.markdown("<br><h3 style='color: #ffffff;'>📥 Passo 2: Importar Extrato de Movimentação</h3>", unsafe_allow_html=True)
 arquivo_upload = st.file_uploader("Arraste o arquivo bruto (Excel, CSV ou TXT) exportado pelo lojista:", type=["xlsx", "csv", "txt"])
 
-# Bloco de execução seguro sem erros de alinhamento
 if arquivo_upload is not None:
     try:
         if arquivo_upload.name.endswith('.xlsx'):
@@ -149,24 +193,3 @@ if arquivo_upload is not None:
                         else: alvo = alvo_parc_2_6
                     elif any(x in produto_real for x in ["ALELO", "SODEXO", "VOUCH"]): alvo = alvo_voucher
                     
-                    if taxa_real > alvo:
-                        total_prejuizo_taxas += valor_real * (taxa_real - alvo)
-                
-                prejuizo_pix = 12000.0 * 0.0140 
-                total_geral = total_prejuizo_taxas + prejuizo_pix
-                
-                st.markdown("<h3>📊 Diagnóstico de Eficiência Financeira</h3>", unsafe_allow_html=True)
-                c_box1, c_box2, c_box3 = st.columns(3)
-                with c_box1:
-                    st.markdown(f"<div class='metric-card' style='border-left: 5px solid #ef4444;'><h5>💰 Rombo Mensal Estimado</h5><h2 style='color: #ef4444 !important;'>R$ {total_geral*4:.2f}</h2><p style='font-size:12px; color:#9ca3af;'>Retido pela credenciadora</p></div>", unsafe_allow_html=True)
-                with c_box2:
-                    st.markdown(f"<div class='metric-card' style='border-left: 5px solid #3b82f6;'><h5>📉 Vazamento Semanal Estancado</h5><h2 style='color: #3b82f6 !important;'>R$ {total_geral:.2f}</h2><p style='font-size:12px; color:#9ca3af;'>Retorna ao caixa</p></div>", unsafe_allow_html=True)
-                with c_box3:
-                    st.markdown(f"<div class='metric-card' style='border-left: 5px solid #10b981;'><h5>🤝 Honorários Frantz Partners</h5><h2 style='color: #10b981 !important;'>R$ {total_geral / 2:.2f}</h2><p style='font-size:12px; color:#9ca3af;'>Comissão de 50% do êxito</p></div>", unsafe_allow_html=True)
-                st.success(f"🎯 Operação concluída: Margem líquida expandida em R$ {total_geral - (total_geral/2):.2f} nesta semana.")
-        else:
-            st.warning("⚠️ Nota: Colunas estruturais divergentes do padrão automático.")
-    except Exception as e:
-        st.error(f"❌ Erro de processamento do layout: {e}.")
-else:
-    st.markdown("<br><div class='metric-card' style='border-left: 5px solid #f59e0b;'><strong>⏱️ Monitor Ativo:</strong> Aguardando extrato para iniciar varredura computadorizada (Suporte Total de 2x a 18x).</div>", unsafe_allow_html=True)
