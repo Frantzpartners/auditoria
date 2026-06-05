@@ -2,7 +2,7 @@ import streamlit as st
 
 # Configuração da página com layout amplo e título corporativo
 st.set_page_config(
-    page_title="Frantz Partners - Inteligência em Adquirência", 
+    page_title="Franz Partners - Inteligência em Adquirência", 
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -46,14 +46,14 @@ st.markdown("""
 # =========================================================================
 # 🔒 SISTEMA DE SEGURANÇA E CHAVE DE ACESSO CORPORATIVA
 # =========================================================================
-SENHA_CORRETA = "100%economia"
+SENHA_CORRETA = "economia"
 
 if "autenticado" not in st.session_state:
     st.session_state["autenticado"] = False
 
 if not st.session_state["autenticado"]:
     st.write("<br><br>", unsafe_allow_html=True)
-    st.title("⚡ Frantz Partners")
+    st.title("⚡ Franz Partners")
     st.subheader("🔒 Área Restrita - Sistema de Fiscalização Robótica")
     st.write("Este aplicativo possui acesso restrito a consultores homologados.")
     
